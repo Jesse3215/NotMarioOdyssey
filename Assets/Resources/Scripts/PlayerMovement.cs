@@ -37,6 +37,7 @@ public class OtherMovement : MonoBehaviour
     private float angle;
     private float targetAngle;
     private float lastAngle;
+    //private int jumpCount = 0;
     private Vector3 moveDirection;
     private bool isRolling = false;
     private Vector3 rollDirection;
