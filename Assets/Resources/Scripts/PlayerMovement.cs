@@ -61,6 +61,8 @@ public class OtherMovement : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log("isGrounded: " + isGrounded);
+
         moveDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayer);
@@ -153,7 +155,7 @@ public class OtherMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext _context)
     {
-        if (_context.performed && isGrounded)
+        if (_context.started && isGrounded)
         {
             if (isCrouching)
             {
@@ -174,10 +176,14 @@ public class OtherMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator SetMoveSpeed(float timer = 1.2f)
+    private IEnumerator SetMoveSpeed()
     {
-        yield return new WaitForSeconds(timer);
-        moveSpeed = 5f;
+        if (isGrounded)
+        {
+            moveSpeed = 5f;
+            isCrouching = false;
+            yield return null;
+        }
     }
 
     public void GroundPound(InputAction.CallbackContext _context)
@@ -212,6 +218,7 @@ public class OtherMovement : MonoBehaviour
         else if (_context.canceled)
         {
             isRolling = false;
+            moveSpeed = 5f;
         }
     }
 
@@ -223,6 +230,8 @@ public class OtherMovement : MonoBehaviour
 
         while (isRolling && isGrounded)
         {
+            moveSpeed = 7.5f;
+
             rollDirection = transform.forward;
 
             m_rigidBody.velocity = rollDirection * rollSpeed;

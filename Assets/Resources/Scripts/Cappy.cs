@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,13 +14,12 @@ public class Cappy : MonoBehaviour
     public float returnSpeed = 15f;
     public float maxDistance = 10f;
     private float timer;
+
     private Vector3 startPosition;
-    private Vector3 endPosition;
     private Transform player;
     private bool isReturning = false;
     private bool isThrown = false;
     private bool isHolding = false;
-    private PlayerInput playerInput;
 
     void Start()
     {
@@ -34,10 +32,6 @@ public class Cappy : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("isThrown: " + isThrown);
-        Debug.Log("isReturning: " + isReturning);
-        Debug.Log(endPosition);
-
         if (isThrown && !isReturning)
         {
             cappy2.SetActive(false);
@@ -45,33 +39,28 @@ public class Cappy : MonoBehaviour
             throwCappy.SetActive(true);
             animatorCappy.SetTrigger("ja");
 
-            if (Vector3.Distance(player.position, throwCappy.transform.position) >= maxDistance)
-            {
-                isReturning = true;
-            }
-            else
+            if (!isHolding)
             {
                 throwCappy.transform.position += startPosition * throwSpeed * Time.deltaTime;
+            }
+
+            if (Vector3.Distance(player.position, throwCappy.transform.position) >= maxDistance && !isHolding)
+            {
+                isReturning = true;
             }
         }
         else if (isReturning)
         {
-            StartCoroutine(WaitReturning());
+            throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
 
             if (Vector3.Distance(throwCappy.transform.position, returnPoint.transform.position) < 0.1f)
             {
-                isReturning = false;
-                isThrown = false;
-                throwCappy.transform.position = returnPoint.transform.position;
+                ResetCappy();
             }
         }
         else
         {
-            cappy2.SetActive(true);
-            cappy.SetActive(true);
-            throwCappy.SetActive(false);
-            throwCappy.transform.position = returnPoint.transform.position;
-            throwCappy.transform.rotation = returnPoint.transform.rotation;
+            ResetCappy();
         }
     }
 
@@ -82,16 +71,15 @@ public class Cappy : MonoBehaviour
             ThrowHat();
             OtherMovement.animator.SetTrigger("Throw");
         }
-
-        if (context.performed)
+        else if (context.performed)
         {
             isHolding = true;
             timer = 0f;
-            StartCoroutine(HoldCappy());
+            StartCoroutine(HoldingCappy());
         }
-
-        if (context.canceled)
+        else if (context.canceled)
         {
+            isHolding = false;
             timer = 2f;
         }
     }
@@ -101,7 +89,6 @@ public class Cappy : MonoBehaviour
         if (!isThrown)
         {
             startPosition = player.forward;
-            endPosition = player.forward * maxDistance;
             isThrown = true;
             isReturning = false;
             throwCappy.transform.position = returnPoint.transform.position;
@@ -109,21 +96,25 @@ public class Cappy : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitReturning()
+    private void ResetCappy()
     {
-        yield return new WaitForSeconds(.6f);
-        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
+        isReturning = false;
+        isThrown = false;
+        throwCappy.SetActive(false);
+        cappy.SetActive(true);
+        cappy2.SetActive(true);
+        throwCappy.transform.position = returnPoint.transform.position;
+        throwCappy.transform.rotation = returnPoint.transform.rotation;
     }
 
-    private IEnumerator HoldCappy()
+    private IEnumerator HoldingCappy()
     {
-        while (timer < 2)
+        while(timer < 2f)
         {
             timer += Time.deltaTime;
             yield return null;
         }
 
-        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
-        isHolding = false;
+        isReturning = true;
     }
 }
