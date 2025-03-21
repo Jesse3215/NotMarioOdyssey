@@ -13,20 +13,19 @@ public class Cappy : MonoBehaviour
     public GameObject returnPoint;
     public float throwSpeed = 10f;
     public float returnSpeed = 15f;
-    public float maxDistance = 5f;
+    public float maxDistance = 10f;
+    private float timer;
     private Vector3 startPosition;
     private Vector3 endPosition;
     private Transform player;
     private bool isReturning = false;
     private bool isThrown = false;
+    private bool isHolding = false;
     private PlayerInput playerInput;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        animatorCappy = GetComponent<Animator>();
-
-        
 
         throwCappy.SetActive(false);
         cappy.SetActive(true);
@@ -37,6 +36,7 @@ public class Cappy : MonoBehaviour
     {
         Debug.Log("isThrown: " + isThrown);
         Debug.Log("isReturning: " + isReturning);
+        Debug.Log(endPosition);
 
         if (isThrown && !isReturning)
         {
@@ -52,12 +52,11 @@ public class Cappy : MonoBehaviour
             else
             {
                 throwCappy.transform.position += startPosition * throwSpeed * Time.deltaTime;
-                //throwCappy.transform.position = Vector3.Lerp(startPosition, endPosition, Time.deltaTime);
             }
         }
         else if (isReturning)
         {
-            throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
+            StartCoroutine(WaitReturning());
 
             if (Vector3.Distance(throwCappy.transform.position, returnPoint.transform.position) < 0.1f)
             {
@@ -78,10 +77,22 @@ public class Cappy : MonoBehaviour
 
     public void OnThrowHat(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
         {
             ThrowHat();
             OtherMovement.animator.SetTrigger("Throw");
+        }
+
+        if (context.performed)
+        {
+            isHolding = true;
+            timer = 0f;
+            StartCoroutine(HoldCappy());
+        }
+
+        if (context.canceled)
+        {
+            timer = 2f;
         }
     }
 
@@ -90,13 +101,29 @@ public class Cappy : MonoBehaviour
         if (!isThrown)
         {
             startPosition = player.forward;
-            startPosition.y += 0.5f;
             endPosition = player.forward * maxDistance;
-            //endPosition.y += 0.5f;
             isThrown = true;
             isReturning = false;
             throwCappy.transform.position = returnPoint.transform.position;
             throwCappy.transform.forward = player.forward;
         }
+    }
+
+    private IEnumerator WaitReturning()
+    {
+        yield return new WaitForSeconds(.6f);
+        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
+    }
+
+    private IEnumerator HoldCappy()
+    {
+        while (timer < 2)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, returnPoint.transform.position, returnSpeed * Time.deltaTime);
+        isHolding = false;
     }
 }

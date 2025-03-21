@@ -91,7 +91,7 @@ public class OtherMovement : MonoBehaviour
         switch (states)
         {
             case States.Idle:
-                //isReadingInputs = false;
+                
                 break;
             case States.Walk:
 
@@ -117,23 +117,23 @@ public class OtherMovement : MonoBehaviour
         }
     }
 
-    //private void OnGUI()
-    //{
-    //    if (!enableDebug) return;
+    private void OnGUI()
+    {
+        if (!enableDebug) return;
 
-    //    GUIStyle m_Style = new GUIStyle
-    //    {
-    //        fontSize = 24,
-    //        normal = { textColor = Color.white }
-    //    };
+        GUIStyle m_Style = new GUIStyle
+        {
+            fontSize = 24,
+            normal = { textColor = Color.white }
+        };
 
-    //    GUI.Label(new Rect(10, 10, 300, 40), "Angle: " + angle, m_Style);
-    //    GUI.Label(new Rect(10, 60, 300, 40), "Target Angle: " + targetAngle, m_Style);
-    //    GUI.Label(new Rect(10, 110, 360, 40), "Move Direction: " + moveDirection, m_Style);
-    //    GUI.Label(new Rect(10, 160, 360, 40), "Input Direction: " + inputDirection, m_Style);
-    //}
+        GUI.Label(new Rect(10, 10, 300, 40), "Angle: " + angle, m_Style);
+        GUI.Label(new Rect(10, 60, 300, 40), "Target Angle: " + targetAngle, m_Style);
+        GUI.Label(new Rect(10, 110, 360, 40), "Move Direction: " + moveDirection, m_Style);
+        GUI.Label(new Rect(10, 160, 360, 40), "Input Direction: " + inputDirection, m_Style);
+    }
 
-    private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter(Collision collision)
     {
         if ((groundLayer.value & (1 << collision.gameObject.layer)) > 0)
         {
