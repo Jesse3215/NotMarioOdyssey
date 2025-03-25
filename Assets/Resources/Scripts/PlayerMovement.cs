@@ -100,11 +100,16 @@ public class OtherMovement : MonoBehaviour
             state = States.Idle;
         }
 
+        if (!isReadingInputs)
+        {
+            m_rigidBody.velocity = Vector3.zero;
+        }
+
         if (state != States.Jump && state != States.LongJump && isGrounded)
         {
             if (moveDirection.sqrMagnitude > 0.01f)
             {
-                //state = isCrouching ? States.Crouch : States.Walk;
+                state = isCrouching ? States.Crouch : States.Walk;
             }
             else
             {
@@ -148,6 +153,9 @@ public class OtherMovement : MonoBehaviour
             case States.LongJump:
 
                 moveSpeed = 8f;
+
+                animator.SetBool("Rolling", false);
+                animator.Play("LongJump");
 
                 velocity = moveDirection * moveSpeed;
                 m_rigidBody.velocity = new Vector3(velocity.x, m_rigidBody.velocity.y, velocity.z);
@@ -252,6 +260,7 @@ public class OtherMovement : MonoBehaviour
     private void PerformLongJump()
     {
         state = States.LongJump;
+        animator.SetBool("Rolling", false);
         animator.SetBool("Crouch", false);
         animator.SetTrigger("LongJump");
         Vector3 jumpDirection = transform.forward * longJumpSpeed + Vector3.up * longJumpPower;
@@ -289,6 +298,7 @@ public class OtherMovement : MonoBehaviour
         {
             isRolling = true;
             state = States.Rol;
+            animator.SetBool("Crouch", false);
             animator.SetBool("Rolling", true);
             coroutine = StartCoroutine(RollCoroutine());
         }
