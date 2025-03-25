@@ -104,17 +104,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "f4754f07-a8c7-43a7-bcc9-a59fc0e674a2",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rol",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "One Modifier",
                     "id": "b5e9945b-a682-4484-9a50-51d68f2b9cf9",
                     "path": "OneModifier",
@@ -139,7 +128,7 @@
                 {
                     "name": "binding",
                     "id": "cd12ebf0-8a08-4b26-8ecf-b15fb06c847f",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -150,18 +139,7 @@
                 {
                     "name": "",
                     "id": "370680d1-e3a1-477a-8271-47ad84b75869",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "051756fa-d105-4867-828b-1bb95478b15c",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -179,6 +157,39 @@
                     "action": "Throw Cappy",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "cb22b3da-39b0-4659-9381-ddf9083991ed",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rol",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "131aab33-c54a-443c-9a90-29f321651390",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rol",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "809b8324-2ffd-44e0-afad-3a3c029b3b12",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rol",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

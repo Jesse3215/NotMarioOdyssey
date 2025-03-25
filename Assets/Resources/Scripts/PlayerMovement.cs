@@ -30,6 +30,7 @@ public class OtherMovement : MonoBehaviour
     [SerializeField] private float jumpPower = 5f;
     [SerializeField] private float groundPoundForce = 10f;
     [SerializeField] private float rollSpeed = 8f;
+    [SerializeField] private float longJumpSpeed = 8f;
     [SerializeField] private float longJumpPower;
     [SerializeField] private float diveForce = 7f;
     [SerializeField] private float diveForceUp = 10f;
@@ -136,6 +137,8 @@ public class OtherMovement : MonoBehaviour
                 break;
             case States.LongJump:
 
+                moveSpeed = 8f;
+
                 if (isGrounded)
                 {
                     if (isReadingInputs)
@@ -155,6 +158,7 @@ public class OtherMovement : MonoBehaviour
                 m_rigidBody.velocity = new Vector3(velocity.x, m_rigidBody.velocity.y, velocity.z);
                 break;
             case States.Rol:
+                animator.SetBool("Rolling", true);
                 break;
             case States.Dive:
                 if (isGrounded)
@@ -173,6 +177,7 @@ public class OtherMovement : MonoBehaviour
 
                 if (isGrounded)
                 {
+                    animator.SetTrigger("Idle");
                     state = States.Idle;
                 }
 
@@ -228,10 +233,20 @@ public class OtherMovement : MonoBehaviour
     {
         if (_context.started && isGrounded)
         {
-            if (isCrouching && state != States.GroundPound && state != States.Dive && state != States.Rol)
+            if (isCrouching)
             {
                 state = States.LongJump;
                 animator.SetBool("Crouch", false);
+                animator.SetTrigger("LongJump");
+                Vector3 jumpDirection = transform.forward * moveSpeed + Vector3.up * longJumpPower;
+                m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
+                m_rigidBody.AddForce(jumpDirection, ForceMode.Impulse);
+                StartCoroutine(SetMoveSpeed());
+            }
+            else if (isRolling)
+            {
+                state = States.LongJump;
+                animator.SetBool("Rolling", false);
                 moveSpeed = 10f;
                 animator.SetTrigger("LongJump");
                 Vector3 jumpDirection = transform.forward * moveSpeed + Vector3.up * longJumpPower;
@@ -241,7 +256,6 @@ public class OtherMovement : MonoBehaviour
             }
             else if (!isCrouching)
             {
-                Debug.Log("Jumped!");
                 state = States.Jump;
                 animator.SetTrigger("Jump");
                 m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.y);
@@ -288,6 +302,7 @@ public class OtherMovement : MonoBehaviour
         if (_context.performed && isGrounded && !isRolling)
         {
             isRolling = true;
+            animator.SetBool("Crouch", false);
             state = States.Rol;
             coroutine = StartCoroutine(RollCoroutine());
         }
@@ -301,8 +316,6 @@ public class OtherMovement : MonoBehaviour
 
     private IEnumerator RollCoroutine()
     {
-        animator.SetBool("Rolling", true);
-
         turnSmoothTime = turnSmoothTime * 10;
 
         while (isRolling && isGrounded)
