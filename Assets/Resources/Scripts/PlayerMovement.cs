@@ -100,9 +100,26 @@ public class OtherMovement : MonoBehaviour
             state = States.Idle;
         }
 
-        if(moveSpeed == 2)
+        if (state != States.Jump && state != States.LongJump && isGrounded)
         {
-            state = States.Crouch;
+            if (moveDirection.sqrMagnitude > 0.01f)
+            {
+                //state = isCrouching ? States.Crouch : States.Walk;
+            }
+            else
+            {
+                state = States.Idle;
+            }
+        }
+
+        if (state == States.Walk)
+        {
+            m_rigidBody.velocity = new Vector3(moveDirection.x * moveSpeed, m_rigidBody.velocity.y, moveDirection.z * moveSpeed);
+            animator.SetBool("Walk", true);
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
         }
 
         switch (state)
@@ -124,14 +141,7 @@ public class OtherMovement : MonoBehaviour
 
                 if (isGrounded)
                 {
-                    if (isReadingInputs)
-                    {
-                        state = States.Walk;
-                    }
-                    if (!isReadingInputs)
-                    {
-                        state = States.Idle;
-                    }
+                    state = isReadingInputs ? States.Walk : States.Idle;
                 }
 
                 break;
@@ -139,38 +149,33 @@ public class OtherMovement : MonoBehaviour
 
                 moveSpeed = 8f;
 
+                velocity = moveDirection * moveSpeed;
+                m_rigidBody.velocity = new Vector3(velocity.x, m_rigidBody.velocity.y, velocity.z);
+
                 if (isGrounded)
                 {
-                    if (isReadingInputs)
-                    {
-                        state = States.Walk;
-                    }
-                    if (!isReadingInputs)
-                    {
-                        state = States.Idle;
-                    }
+                    state = isReadingInputs ? States.Walk : States.Idle;
                 }
 
                 break;
 
             case States.Crouch:
+                moveSpeed = 2f;
                 velocity = moveDirection * moveSpeed;
                 m_rigidBody.velocity = new Vector3(velocity.x, m_rigidBody.velocity.y, velocity.z);
+                if (isRolling)
+                {
+                    state = States.Rol;
+                }
                 break;
             case States.Rol:
+                animator.SetBool("Crouch", false);
                 animator.SetBool("Rolling", true);
                 break;
             case States.Dive:
                 if (isGrounded)
                 {
-                    if (isReadingInputs)
-                    {
-                        state = States.Walk;
-                    }
-                    if (!isReadingInputs)
-                    {
-                        state = States.Idle;
-                    }
+                    state = isReadingInputs ? States.Walk : States.Idle;
                 }
                 break;
             case States.GroundPound:
@@ -202,6 +207,7 @@ public class OtherMovement : MonoBehaviour
         GUI.Label(new Rect(10, 210, 360, 40), "State: " + state, m_Style);
         GUI.Label(new Rect(10, 260, 360, 40), "isGrounded: " + isGrounded, m_Style);
         GUI.Label(new Rect(10, 310, 360, 40), "isReadingInputs: " + isReadingInputs, m_Style);
+        GUI.Label(new Rect(10, 360, 360, 40), "isRolling: " + isRolling, m_Style);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -214,18 +220,8 @@ public class OtherMovement : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext _context)
     {
-        if(_context.performed)
-        {
-            isReadingInputs = true;
-        }
-        if (isReadingInputs)
-        {
-            inputDirection = _context.ReadValue<Vector2>();
-        }
-        if (_context.canceled)
-        {
-            isReadingInputs = false;
-        }
+        inputDirection = _context.ReadValue<Vector2>();
+        isReadingInputs = _context.performed;
 
     }
 
@@ -233,46 +229,36 @@ public class OtherMovement : MonoBehaviour
     {
         if (_context.started && isGrounded)
         {
-            if (isCrouching)
+            if (isCrouching || isRolling)
             {
-                state = States.LongJump;
-                animator.SetBool("Crouch", false);
-                animator.SetTrigger("LongJump");
-                Vector3 jumpDirection = transform.forward * moveSpeed + Vector3.up * longJumpPower;
-                m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
-                m_rigidBody.AddForce(jumpDirection, ForceMode.Impulse);
-                StartCoroutine(SetMoveSpeed());
+                PerformLongJump();
             }
-            else if (isRolling)
+            else
             {
-                state = States.LongJump;
-                animator.SetBool("Rolling", false);
-                moveSpeed = 10f;
-                animator.SetTrigger("LongJump");
-                Vector3 jumpDirection = transform.forward * moveSpeed + Vector3.up * longJumpPower;
-                m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
-                m_rigidBody.AddForce(jumpDirection, ForceMode.Impulse);
-                StartCoroutine(SetMoveSpeed());
-            }
-            else if (!isCrouching)
-            {
-                state = States.Jump;
-                animator.SetTrigger("Jump");
-                m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.y);
-                m_rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-                isGrounded = false;
+                PerformRegularJump();
             }
         }
     }
 
-    private IEnumerator SetMoveSpeed()
+    private void PerformRegularJump()
     {
-        if (isGrounded)
-        {
-            moveSpeed = 5f;
-            isCrouching = false;
-            yield return null;
-        }
+        state = States.Jump;
+        animator.SetTrigger("Jump");
+        m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
+        m_rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        isGrounded = false;
+    }
+
+    private void PerformLongJump()
+    {
+        state = States.LongJump;
+        animator.SetBool("Crouch", false);
+        animator.SetTrigger("LongJump");
+        Vector3 jumpDirection = transform.forward * longJumpSpeed + Vector3.up * longJumpPower;
+        m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
+        m_rigidBody.AddForce(jumpDirection, ForceMode.Impulse);
+        isGrounded = false;
+        isCrouching = false;
     }
 
     public void GroundPound(InputAction.CallbackContext _context)
@@ -302,15 +288,16 @@ public class OtherMovement : MonoBehaviour
         if (_context.performed && isGrounded && !isRolling)
         {
             isRolling = true;
-            animator.SetBool("Crouch", false);
             state = States.Rol;
+            animator.SetBool("Rolling", true);
             coroutine = StartCoroutine(RollCoroutine());
         }
         else if (_context.canceled)
         {
             isRolling = false;
-            state = States.Idle;
+            animator.SetBool("Rolling", false);
             moveSpeed = 5f;
+            state = isReadingInputs ? States.Walk : States.Idle;
         }
     }
 
@@ -361,14 +348,7 @@ public class OtherMovement : MonoBehaviour
             animator.SetBool("Crouch", false);
             isCrouching = false;
             moveSpeed = 5f;
-            if(isReadingInputs)
-            {
-                state = States.Walk;
-            }
-            if (!isReadingInputs)
-            {
-                state = States.Idle;
-            }
+            state = isReadingInputs ? States.Walk : States.Idle;
         }
     }
 }
