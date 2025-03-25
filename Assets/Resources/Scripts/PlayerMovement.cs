@@ -181,6 +181,10 @@ public class OtherMovement : MonoBehaviour
                 animator.SetBool("Rolling", true);
                 break;
             case States.Dive:
+                if (!isGrounded)
+                {
+                    state = States.Dive;
+                }
                 if (isGrounded)
                 {
                     state = isReadingInputs ? States.Walk : States.Idle;
