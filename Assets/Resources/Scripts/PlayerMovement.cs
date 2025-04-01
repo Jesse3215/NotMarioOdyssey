@@ -12,6 +12,7 @@ public enum States
     Rol,
     Dive,
     GroundPound,
+    Throwing,
 }
 
 
@@ -130,6 +131,7 @@ public class OtherMovement : MonoBehaviour
         switch (state)
         {
             case States.Idle:
+                animator.Play("Idle");
                 moveDirection = Vector3.zero;
                 inputDirection = Vector3.zero;
                 break;
