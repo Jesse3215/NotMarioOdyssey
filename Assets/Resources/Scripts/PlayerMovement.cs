@@ -131,7 +131,7 @@ public class OtherMovement : MonoBehaviour
         switch (state)
         {
             case States.Idle:
-                animator.Play("Idle");
+                StartCoroutine(startIdleAnim());
                 moveDirection = Vector3.zero;
                 inputDirection = Vector3.zero;
                 break;
@@ -202,6 +202,13 @@ public class OtherMovement : MonoBehaviour
 
                 break;
         }
+    }
+
+    private IEnumerator startIdleAnim()
+    {
+        yield return new WaitForSeconds(1);
+        animator.Play("Idle");
+        StopCoroutine(startIdleAnim());
     }
 
     private void OnGUI()
