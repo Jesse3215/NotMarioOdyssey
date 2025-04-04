@@ -22,6 +22,7 @@ public class OtherMovement : MonoBehaviour
     public Transform cameraTransform;
     private bool isGrounded = true;
     public Animator animator;
+    public Cappy cappy;
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float moveSpeed;
@@ -226,6 +227,7 @@ public class OtherMovement : MonoBehaviour
         GUI.Label(new Rect(10, 260, 360, 40), "isGrounded: " + isGrounded, m_Style);
         GUI.Label(new Rect(10, 310, 360, 40), "isReadingInputs: " + isReadingInputs, m_Style);
         GUI.Label(new Rect(10, 360, 360, 40), "isRolling: " + isRolling, m_Style);
+        GUI.Label(new Rect(10, 410, 360, 40), "isReturning: " + cappy.isReturning, m_Style);
     }
 
     private void OnCollisionEnter(Collision collision)

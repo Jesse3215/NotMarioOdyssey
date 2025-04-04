@@ -6,10 +6,12 @@ public class Cappy : MonoBehaviour
 {
     public Animator animatorCappy;
     public OtherMovement OtherMovement;
+    public EnemySlime Slime;
     public GameObject throwCappy;
     public GameObject cappy;
     public GameObject cappy2;
     public GameObject returnPoint;
+    public Transform EnemyPos;
     public float throwSpeed = 10f;
     public float returnSpeed = 15f;
     public float maxDistance = 10f;
@@ -17,7 +19,7 @@ public class Cappy : MonoBehaviour
 
     private Vector3 startPosition;
     private Transform player;
-    private bool isReturning = false;
+    public bool isReturning = false;
     private bool isThrown = false;
     private bool isHolding = false;
 
@@ -62,6 +64,12 @@ public class Cappy : MonoBehaviour
         {
             ResetCappy();
         }
+    }
+
+    public void GoToEnemy()
+    {
+        isReturning = false;
+        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, EnemyPos.transform.position, returnSpeed * Time.deltaTime);
     }
 
     public void OnThrowHat(InputAction.CallbackContext context)
