@@ -68,9 +68,6 @@ public class OtherMovement : MonoBehaviour
 
         moveDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
 
-        //isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayer);
-        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red);
-
         if (inputDirection.sqrMagnitude > 0.01f)
         {
             targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
