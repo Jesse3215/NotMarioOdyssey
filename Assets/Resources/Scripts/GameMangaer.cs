@@ -13,6 +13,7 @@ public class GameMangaer : MonoBehaviour
     public CinemachineCamera slimeCam;
 
     public GameObject mario;
+    public GameObject marioCappy;
     public GameObject slimeEnemy;
 
     private void Start()
@@ -35,5 +36,14 @@ public class GameMangaer : MonoBehaviour
         slimeEnemy.GetComponent<OtherMovement>().enabled = true;
         playerCam.Priority = 0;
         slimeCam.Priority = 100;
+    }
+
+    private void Update()
+    {
+        if(slime.GetComponent<OtherMovement>().enabled == true)
+        {
+            mario.SetActive(false);
+            marioCappy.SetActive(false);
+        }
     }
 }
