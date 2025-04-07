@@ -214,6 +214,54 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Slime"",
+            ""id"": ""e3695659-e990-4c3b-a6c9-45050b4fa994"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""3cceeba2-6c8d-4a5d-abb9-b951bfff48c2"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d6b5cd1-5bda-4339-b442-12d0d3894674"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f59b6596-b3b2-4ac3-8d8f-9f685e047397"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06c4959d-3b5c-491c-9ca1-0e9accd547e1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -239,11 +287,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Dive = m_CharacterControls.FindAction("Dive", throwIfNotFound: true);
         m_CharacterControls_Crouch = m_CharacterControls.FindAction("Crouch", throwIfNotFound: true);
         m_CharacterControls_ThrowCappy = m_CharacterControls.FindAction("Throw Cappy", throwIfNotFound: true);
+        // Slime
+        m_Slime = asset.FindActionMap("Slime", throwIfNotFound: true);
+        m_Slime_Movement = m_Slime.FindAction("Movement", throwIfNotFound: true);
+        m_Slime_Jump = m_Slime.FindAction("Jump", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
     {
         UnityEngine.Debug.Assert(!m_CharacterControls.enabled, "This will cause a leak and performance issues, PlayerInput.CharacterControls.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Slime.enabled, "This will cause a leak and performance issues, PlayerInput.Slime.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -395,6 +448,60 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public CharacterControlsActions @CharacterControls => new CharacterControlsActions(this);
+
+    // Slime
+    private readonly InputActionMap m_Slime;
+    private List<ISlimeActions> m_SlimeActionsCallbackInterfaces = new List<ISlimeActions>();
+    private readonly InputAction m_Slime_Movement;
+    private readonly InputAction m_Slime_Jump;
+    public struct SlimeActions
+    {
+        private @PlayerInput m_Wrapper;
+        public SlimeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Slime_Movement;
+        public InputAction @Jump => m_Wrapper.m_Slime_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_Slime; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SlimeActions set) { return set.Get(); }
+        public void AddCallbacks(ISlimeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SlimeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SlimeActionsCallbackInterfaces.Add(instance);
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+        }
+
+        private void UnregisterCallbacks(ISlimeActions instance)
+        {
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+        }
+
+        public void RemoveCallbacks(ISlimeActions instance)
+        {
+            if (m_Wrapper.m_SlimeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISlimeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SlimeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SlimeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SlimeActions @Slime => new SlimeActions(this);
     private int m_ControllerSchemeIndex = -1;
     public InputControlScheme ControllerScheme
     {
@@ -413,5 +520,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnDive(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnThrowCappy(InputAction.CallbackContext context);
+    }
+    public interface ISlimeActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

@@ -11,7 +11,7 @@ public class CappyCollision : MonoBehaviour
         if (other.gameObject.CompareTag("Slime"))
         {
             Debug.Log("Hit Enemy");
-            Cappy.GoToEnemy();
+            Cappy.GoToEnemy();  
         }
     }
 }

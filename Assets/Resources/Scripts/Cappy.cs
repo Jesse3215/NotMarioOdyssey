@@ -5,13 +5,17 @@ using UnityEngine.InputSystem;
 public class Cappy : MonoBehaviour
 {
     public Animator animatorCappy;
+
     public OtherMovement OtherMovement;
     public EnemySlime Slime;
+    public GameMangaer gamemanager;
+
     public GameObject throwCappy;
     public GameObject cappy;
     public GameObject cappy2;
+    public GameObject cappyOnEnemy;
     public GameObject returnPoint;
-    public Transform EnemyPos;
+    public GameObject enemySlime;
     public float throwSpeed = 10f;
     public float returnSpeed = 15f;
     public float maxDistance = 10f;
@@ -22,6 +26,7 @@ public class Cappy : MonoBehaviour
     public bool isReturning = false;
     private bool isThrown = false;
     private bool isHolding = false;
+    private bool isOnEnemy = false;
 
     void Start()
     {
@@ -64,12 +69,21 @@ public class Cappy : MonoBehaviour
         {
             ResetCappy();
         }
+
+        if (isOnEnemy)
+        {
+            throwCappy.SetActive(false);
+            cappy.SetActive(false);
+            cappy2.SetActive(false);
+        }
     }
 
     public void GoToEnemy()
     {
         isReturning = false;
-        throwCappy.transform.position = Vector3.MoveTowards(throwCappy.transform.position, EnemyPos.transform.position, returnSpeed * Time.deltaTime);
+        isOnEnemy = true;
+        cappyOnEnemy.SetActive(true);
+        gamemanager.EnableSlime();
     }
 
     public void OnThrowHat(InputAction.CallbackContext context)
