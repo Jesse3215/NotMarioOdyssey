@@ -67,7 +67,7 @@ public class OtherMovement : MonoBehaviour
     {
         Debug.Log("isGrounded: " + isGrounded);
 
-        moveDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
+        moveDirection = new Vector3(inputDirection.x, m_rigidBody.velocity.y, inputDirection.y).normalized;
 
         if (inputDirection.sqrMagnitude > 0.01f)
         {
@@ -101,7 +101,7 @@ public class OtherMovement : MonoBehaviour
 
         if (!isReadingInputs)
         {
-            m_rigidBody.velocity = Vector3.zero;
+            m_rigidBody.velocity = new Vector3(0f, m_rigidBody.velocity.y, 0f);
         }
 
         if (state != States.Jump && state != States.LongJump && isGrounded)
@@ -264,7 +264,6 @@ public class OtherMovement : MonoBehaviour
     {
         state = States.Jump;
         animator.SetTrigger("Jump");
-        m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
         m_rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         isGrounded = false;
     }
@@ -276,7 +275,6 @@ public class OtherMovement : MonoBehaviour
         animator.SetBool("Crouch", false);
         animator.SetTrigger("LongJump");
         Vector3 jumpDirection = transform.forward * longJumpSpeed + Vector3.up * longJumpPower;
-        m_rigidBody.velocity = new Vector3(m_rigidBody.velocity.x, 0f, m_rigidBody.velocity.z);
         m_rigidBody.AddForce(jumpDirection, ForceMode.Impulse);
         isGrounded = false;
         isCrouching = false;
