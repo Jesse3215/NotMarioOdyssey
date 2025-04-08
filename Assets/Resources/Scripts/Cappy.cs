@@ -69,13 +69,6 @@ public class Cappy : MonoBehaviour
         {
             ResetCappy();
         }
-
-        if (isOnEnemy)
-        {
-            throwCappy.SetActive(false);
-            cappy.SetActive(false);
-            cappy2.SetActive(false);
-        }
     }
 
     public void GoToEnemy()

@@ -28,9 +28,9 @@ public class GameMangaer : MonoBehaviour
     public void EnablePlayer()
     {
         slimeEnemy.GetComponent<OtherMovement>().enabled = false;
-        //slimeEnemy.GetComponent<PlayerInput>().Disable();
+        mario.SetActive(true);
+        marioCappy.SetActive(true);
         mario.GetComponent<OtherMovement>().enabled = true;
-        //mario.GetComponent<PlayerInput>().Enable();
         slimeCam.Priority = 0;
         playerCam.Priority = 100; 
     }
@@ -38,9 +38,7 @@ public class GameMangaer : MonoBehaviour
     public void EnableSlime()
     {
         mario.GetComponent<OtherMovement>().enabled = false;
-        //mario.GetComponent<PlayerInput>().Disable();
         slimeEnemy.GetComponent<OtherMovement>().enabled = true;
-        //slimeEnemy.GetComponent<PlayerInput>().Enable();
         playerCam.Priority = 0;
         slimeCam.Priority = 100;
     }

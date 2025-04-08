@@ -1699,6 +1699,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3d6b5cd1-5bda-4339-b442-12d0d3894674
     m_ActionName: Slime/Jump[/DualSenseGamepadHID/buttonSouth,/DualSenseGamepadHID1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1061381558}
+        m_TargetAssemblyTypeName: EnemySlime, Assembly-CSharp
+        m_MethodName: OnEscape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f70f59d3-f74f-4f1c-a6bd-77a069960538
+    m_ActionName: Slime/Escape[/DualSenseGamepadHID/leftTrigger]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Slime
@@ -1845,6 +1861,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlimePBR
       objectReference: {fileID: 0}
+    - target: {fileID: 3934097116547284083, guid: 4c131e54a64dae045854231bcb6762ba,
+        type: 3}
+      propertyPath: gamemanager
+      value: 
+      objectReference: {fileID: 397565699}
     - target: {fileID: 5606982470166332606, guid: 4c131e54a64dae045854231bcb6762ba,
         type: 3}
       propertyPath: Cappy

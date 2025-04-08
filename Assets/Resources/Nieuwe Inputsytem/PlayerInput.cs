@@ -236,6 +236,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""f70f59d3-f74f-4f1c-a6bd-77a069960538"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +267,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""694f53bc-4d3c-4ca0-94f8-d150f91b8e0c"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -291,6 +311,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Slime = asset.FindActionMap("Slime", throwIfNotFound: true);
         m_Slime_Movement = m_Slime.FindAction("Movement", throwIfNotFound: true);
         m_Slime_Jump = m_Slime.FindAction("Jump", throwIfNotFound: true);
+        m_Slime_Escape = m_Slime.FindAction("Escape", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -454,12 +475,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<ISlimeActions> m_SlimeActionsCallbackInterfaces = new List<ISlimeActions>();
     private readonly InputAction m_Slime_Movement;
     private readonly InputAction m_Slime_Jump;
+    private readonly InputAction m_Slime_Escape;
     public struct SlimeActions
     {
         private @PlayerInput m_Wrapper;
         public SlimeActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Slime_Movement;
         public InputAction @Jump => m_Wrapper.m_Slime_Jump;
+        public InputAction @Escape => m_Wrapper.m_Slime_Escape;
         public InputActionMap Get() { return m_Wrapper.m_Slime; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -475,6 +498,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(ISlimeActions instance)
@@ -485,6 +511,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(ISlimeActions instance)
@@ -525,5 +554,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }
