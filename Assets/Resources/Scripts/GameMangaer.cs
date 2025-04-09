@@ -54,6 +54,8 @@ public class GameMangaer : MonoBehaviour
         {
             mario.SetActive(false);
             marioCappy.SetActive(false);
+            mario.transform.position = slime.transform.position;
+            marioCappy.transform.position = slime.transform.position;
         }
     }
 }
