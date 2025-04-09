@@ -83,6 +83,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 0}
   animator: {fileID: 5023192668770808448}
+  cappy: {fileID: 5305752829358720079}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -112,13 +113,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animatorCappy: {fileID: 0}
   OtherMovement: {fileID: 3478865400076221846}
+  Slime: {fileID: 0}
+  gamemanager: {fileID: 0}
   throwCappy: {fileID: 0}
   cappy: {fileID: 1351085220309289487}
   cappy2: {fileID: 601187356715337229}
+  cappyOnEnemy: {fileID: 0}
   returnPoint: {fileID: 2780106130605612698}
+  enemySlime: {fileID: 0}
   throwSpeed: 10
   returnSpeed: 15
   maxDistance: 5
+  isReturning: 0
 --- !u!114 &6409217992804206411
 MonoBehaviour:
   m_ObjectHideFlags: 0

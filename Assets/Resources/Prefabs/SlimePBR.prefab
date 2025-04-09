@@ -351,6 +351,10 @@ GameObject:
   - component: {fileID: 1091720378282642384}
   - component: {fileID: 7522317821079630237}
   - component: {fileID: 3934097116547284083}
+  - component: {fileID: 8889916223104000824}
+  - component: {fileID: 3247731115930939439}
+  - component: {fileID: 2506469837867164427}
+  - component: {fileID: 1869282254107641815}
   m_Layer: 0
   m_Name: SlimePBR
   m_TagString: Slime
@@ -371,6 +375,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6842449775240848176}
   - {fileID: 3589026342425426399}
   - {fileID: 9093671042117332162}
   - {fileID: 2705384813372226632}
@@ -411,8 +416,194 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d372071b85086f48b7e710f67f350ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamemanager: {fileID: 0}
   hitTrigger: {fileID: 1928972504140796585}
   hitTarget: {fileID: 5969716859792753835}
+--- !u!114 &8889916223104000824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446171484221252534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fa7371e75195344bb7f2a36c8dd468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 6842449775240848176}
+  animator: {fileID: 7522317821079630237}
+  cappy: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  moveSpeed: 0
+  crouchSpeed: 2
+  smoothTime: 0.25
+  enableDebug: 1
+  jumpPower: 5
+  groundPoundForce: 10
+  rollSpeed: 8
+  longJumpSpeed: 8
+  longJumpPower: 0
+  diveForce: 7
+  diveForceUp: 10
+  state: 0
+--- !u!114 &3247731115930939439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446171484221252534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e3f45129ffcaf68448d511dfbb8938af,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fa8b360d-99c6-4993-9e8b-fc395e7b40a0
+    m_ActionName: CharacterControls/Movement[/DualSenseGamepadHID/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 269bbbbd-a3f4-41cb-8310-44e9d66bda88
+    m_ActionName: CharacterControls/Jump[/DualSenseGamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cca7fe44-0bd0-47cb-b978-fd5800e2a7c1
+    m_ActionName: CharacterControls/GroundPound[/DualSenseGamepadHID/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8b5525eb-d5c3-43ea-aa90-65cd70ce37f5
+    m_ActionName: CharacterControls/Rol[/DualSenseGamepadHID/leftTrigger,/DualSenseGamepadHID/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b5a83ae6-2a56-469b-a118-4a10b566b788
+    m_ActionName: CharacterControls/Dive[/DualSenseGamepadHID/leftTrigger,/DualSenseGamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ab19e174-0435-416d-b403-d0fafa64c81d
+    m_ActionName: CharacterControls/Crouch[/DualSenseGamepadHID/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 35ab4760-96d3-48c5-97e0-276513db3c02
+    m_ActionName: CharacterControls/Throw Cappy[/DualSenseGamepadHID/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8889916223104000824}
+        m_TargetAssemblyTypeName: OtherMovement, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3cceeba2-6c8d-4a5d-abb9-b951bfff48c2
+    m_ActionName: Slime/Movement[/DualSenseGamepadHID/leftStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8889916223104000824}
+        m_TargetAssemblyTypeName: OtherMovement, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3d6b5cd1-5bda-4339-b442-12d0d3894674
+    m_ActionName: Slime/Jump[/DualSenseGamepadHID/buttonSouth,/DualSenseGamepadHID1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3934097116547284083}
+        m_TargetAssemblyTypeName: EnemySlime, Assembly-CSharp
+        m_MethodName: OnEscape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f70f59d3-f74f-4f1c-a6bd-77a069960538
+    m_ActionName: Slime/Escape[/DualSenseGamepadHID/leftTrigger]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Slime
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!54 &2506469837867164427
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446171484221252534}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!65 &1869282254107641815
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446171484221252534}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.58, z: 0}
 --- !u!1 &3653858954377037799
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,9 +863,84 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cappy: {fileID: 0}
+  slime: {fileID: 5969716859792753835}
 --- !u!4 &9093671042117332162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9141795488826299782, guid: 226efd8287e52ad46ab7cc0bdca691ea,
     type: 3}
   m_PrefabInstance: {fileID: 66739454826150212}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8698263569547217629
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1091720378282642384}
+    m_Modifications:
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.6576056
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9673613
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.2534013
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 3.634998e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1.9860849e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 29.358
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7312235652089127781, guid: ced1f3126524be64581327b666163047,
+        type: 3}
+      propertyPath: m_Name
+      value: FreeLook Camera (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ced1f3126524be64581327b666163047, type: 3}
+--- !u!4 &6842449775240848176 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2757103956352821741, guid: ced1f3126524be64581327b666163047,
+    type: 3}
+  m_PrefabInstance: {fileID: 8698263569547217629}
   m_PrefabAsset: {fileID: 0}
