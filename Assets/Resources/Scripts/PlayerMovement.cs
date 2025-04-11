@@ -81,9 +81,10 @@ public class OtherMovement : MonoBehaviour
             angle = lastAngle;
         }
 
-        if (moveDirection.sqrMagnitude > 0.01f && isGrounded && state != States.Crouch && state != States.Rol)
+        if (moveDirection.sqrMagnitude > 0.01f && isGrounded)
         {
             state = States.Walk;
+            animator.SetBool("Walk", true);
         }
 
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -99,7 +100,7 @@ public class OtherMovement : MonoBehaviour
             state = States.Idle;
         }
 
-        if (!isReadingInputs)
+        if (!isReadingInputs && state == States.Jump || state == States.LongJump)
         {
             m_rigidBody.velocity = new Vector3(0f, m_rigidBody.velocity.y, 0f);
         }
@@ -116,12 +117,7 @@ public class OtherMovement : MonoBehaviour
             }
         }
 
-        if (state == States.Walk)
-        {
-            m_rigidBody.velocity = new Vector3(moveDirection.x * moveSpeed, m_rigidBody.velocity.y, moveDirection.z * moveSpeed);
-            animator.SetBool("Walk", true);
-        }
-        else
+        if(state != States.Walk)
         {
             animator.SetBool("Walk", false);
         }
@@ -136,8 +132,7 @@ public class OtherMovement : MonoBehaviour
             case States.Walk:
                 moveSpeed = 5f;
                 velocity = moveDirection * moveSpeed;
-                m_rigidBody.velocity = new Vector3(velocity.x, m_rigidBody.velocity.y, velocity.z);
-                animator.SetBool("Walk", true);
+                m_rigidBody.velocity = new Vector3(moveDirection.x * moveSpeed, m_rigidBody.velocity.y, moveDirection.z * moveSpeed);
                 break;
             case States.Jump:
                 moveSpeed = 5f;
@@ -242,7 +237,6 @@ public class OtherMovement : MonoBehaviour
     {
         inputDirection = _context.ReadValue<Vector2>();
         isReadingInputs = _context.performed;
-
     }
 
     public void Jump(InputAction.CallbackContext _context)

@@ -493,6 +493,11 @@ PrefabInstance:
       propertyPath: animatorCappy
       value: 
       objectReference: {fileID: 1946953368}
+    - target: {fileID: 5968754515297280434, guid: 5b6ac341ebc7b954a9ebdda2afcd1361,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1327,6 +1332,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2506469837867164427, guid: 4c131e54a64dae045854231bcb6762ba,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 3247731115930939439, guid: 4c131e54a64dae045854231bcb6762ba,
+        type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Controller
       objectReference: {fileID: 0}
     - target: {fileID: 3446171484221252534, guid: 4c131e54a64dae045854231bcb6762ba,
         type: 3}
