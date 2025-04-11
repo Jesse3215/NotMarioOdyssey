@@ -111,7 +111,7 @@ public class OtherMovement : MonoBehaviour
             {
                 state = isCrouching ? States.Crouch : States.Walk;
             }
-            else
+            else if(!isReadingInputs)
             {
                 state = States.Idle;
             }
@@ -125,9 +125,10 @@ public class OtherMovement : MonoBehaviour
         switch (state)
         {
             case States.Idle:
-                StartCoroutine(startIdleAnim());
                 moveDirection = Vector3.zero;
                 inputDirection = Vector3.zero;
+                velocity = Vector3.zero;
+                StartCoroutine(startIdleAnim());
                 break;
             case States.Walk:
                 moveSpeed = 5f;
@@ -222,7 +223,8 @@ public class OtherMovement : MonoBehaviour
         GUI.Label(new Rect(10, 260, 360, 40), "isGrounded: " + isGrounded, m_Style);
         GUI.Label(new Rect(10, 310, 360, 40), "isReadingInputs: " + isReadingInputs, m_Style);
         GUI.Label(new Rect(10, 360, 360, 40), "isRolling: " + isRolling, m_Style);
-        //GUI.Label(new Rect(10, 410, 360, 40), "isReturning: " + cappy.isReturning, m_Style);
+        GUI.Label(new Rect(10, 410, 360, 40), "isReturning: " + cappy.isReturning, m_Style);
+        GUI.Label(new Rect(10, 460, 360, 40), "velocity: " + velocity, m_Style);
     }
 
     private void OnCollisionEnter(Collision collision)
